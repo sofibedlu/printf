@@ -23,16 +23,14 @@ int string(va_list args)
 	int i = 0;
 
 	s = va_arg(args, char *);
-	if (s != NULL)
+	if (s == NULL)
+		return (-1);
+	while (s[i] != '\0')
 	{
-		while (s[i] != '\0')
-		{
-			_write(s[i]);
-			i++;
-		}
-		return (i);
+		_write(s[i]);
+		i++;
 	}
-	return (-1);
+	return (i);
 }
 /**
  * percent - print %
