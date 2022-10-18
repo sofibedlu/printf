@@ -32,7 +32,7 @@ int string(va_list args)
 		}
 		return (i);
 	}
-	return (0);
+	return (-1);
 }
 /**
  * percent - print %
