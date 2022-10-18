@@ -19,5 +19,5 @@ int string(va_list args);
 int percent(va_list args);
 int _printf(const char *format, ...);
 int _write(char c);
-
+int checkForSpeci(const char *format, speci selector[], va_list args);
 #endif

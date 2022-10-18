@@ -1,5 +1,3 @@
-#include <unistd.h>
-#include <string.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include "main.h"
@@ -16,9 +14,7 @@
 int _printf(const char *format, ...)
 {
 	va_list args;
-	int i, j, n;
-	int value = 0;
-	int chars = 0;
+	int numChars;
 
 	speci selector[] = {
 
@@ -30,60 +26,10 @@ int _printf(const char *format, ...)
 		{NULL, NULL}
 	};
 
+	if (format == NULL)
+		return (-1);
 	va_start(args, format);
-	for (i = 0; format[i] != '\0'; i++)
-	{
-		if (format[i] == '%')
-		{
-			for (j = 0; selector[j].specifier != NULL; j++)
-			{
-				if (format[i + 1] == *selector[j].specifier)
-				{
-					value = selector[j].fun(args);
-					if (value == -1)
-						return (-1);
-					chars += value;
-					break;
-				}
-			}
-			if (selector[j].specifier == NULL && format[i + 1] != ' ')
-			{
-				if (format[i + 1] != '\0')
-				{
-					_write(format[i]);
-					_write(format[i + 1]);
-					chars += 2;
-				}
-				else
-					return (-1);
-			}
-			if (selector[j].specifier == NULL && format[i + 1] == ' ')
-			{
-				while (format[i + 1 + n] == ' ')
-					n++;
-				_write(' ');
-				chars++;
-				for (j = 0; selector[j].specifier != NULL; j++)
-				{
-					if (format[i + 1 + n] == *selector[j].specifier)
-					{
-						value = selector[j].fun(args);
-						if (value == -1)
-							return (-1);
-						chars += value;
-						break;
-					}
-				}
-			}
-			i++;
-		}
-		else
-		{
-			_write(format[i]);
-			chars++;
-		}
-
-	}
+	numChars = checkForSpeci(format, selector, args);
 	va_end(args);
-	return (chars);
+	return (numChars);
 }
